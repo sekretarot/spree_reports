@@ -36,9 +36,17 @@ module SpreeReports
         variant_ids_and_quantity = line_items.group(:variant_id).sum(:quantity).sort_by { |k,v| v }.reverse
         
         variants = Spree::Variant.all
-        variant_names = variants.all.map { |v| [v.id, [variant_name_with_option_values(v), v.slug] ] }.to_h
+        variant_names = variants.all.map { |v| [v.id, [variant_name_with_option_values(v), v.slug, v.available_on] ] }.to_h
         
-        @data_tmp = variant_ids_and_quantity.map { |id, quantity| [id, quantity, variant_names[id][0], variant_names[id][1]] }     
+        @data_tmp = variant_ids_and_quantity.map do |id, quantity|
+          [
+            id,
+            quantity,
+            variant_names[id][0],
+            variant_names[id][1],
+            variant_names[id][2]
+          ]
+        end
       end
       
       def build_response
@@ -47,6 +55,7 @@ module SpreeReports
             variant_id: item[0],
             variant_name: item[2],
             variant_slug: item[3],
+            variant_available_on: item[4],
             quantity: item[1]
           }
         end

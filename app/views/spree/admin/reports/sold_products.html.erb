@@ -39,16 +39,18 @@
     
     <table class="data" border="1">
       <tr>
+        <th>Pos</th>
         <th>Variant ID</th>
         <th>Product Variant Name</th>
         <th>Quantity</th>
       </tr>
   
-      <% @report.data.each do |item| %>
+      <% @report.data.each_with_index do |item, index| %>
         <tr>
+          <td><%= index+1 %></td>
           <td><%= item[:variant_id] %></td>
           <td>
-            <%= link_to item[:variant_name], product_path(item[:variant_slug]) %>
+            <%= link_to item[:variant_name], product_path(item[:variant_slug]), class: item[:variant_available_on] > Time.now ? "red" : "" %>
             <%= link_to "edit", admin_product_path(item[:variant_slug]) %>
           </td>
           <td><%= number_with_delimiter(item[:quantity]) %></td>
