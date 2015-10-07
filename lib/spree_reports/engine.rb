@@ -12,16 +12,15 @@ module SpreeReports
       g.test_framework :rspec
     end
     
-    # apply decorators
-    def self.activate
+    config.to_prepare do
+      # load ruby files
       Dir.glob(File.join(File.dirname(__FILE__), '../../app/**/*.rb')) do |c|
-        Rails.configuration.cache_classes ? require(c) : load(c)
+        require_dependency(c)
       end
       
+      # add css files to asset pipeline
       Rails.application.config.assets.precompile += %w( spree_reports/spree_reports.css )
     end
-
-    config.to_prepare &method(:activate).to_proc
-
+    
   end
 end
