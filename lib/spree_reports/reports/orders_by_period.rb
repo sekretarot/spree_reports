@@ -1,3 +1,5 @@
+require 'csv'
+
 module SpreeReports
   module Reports
     class OrdersByPeriod < SpreeReports::Reports::Base

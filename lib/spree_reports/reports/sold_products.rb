@@ -1,3 +1,5 @@
+require 'csv'
+
 module SpreeReports
   module Reports
     class SoldProducts < SpreeReports::Reports::Base
